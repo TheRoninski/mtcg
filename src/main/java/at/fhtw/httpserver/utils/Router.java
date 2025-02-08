@@ -1,25 +1,22 @@
 package at.fhtw.httpserver.utils;
 
-import at.fhtw.httpserver.server.Service;
+import at.fhtw.httpserver.server.Controller;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Router {
-    private Map<String, Service> serviceRegistry = new HashMap<>();
+    private final Map<String, Controller> controllerRegistry = new HashMap<>();
 
-    public void addService(String route, Service service)
-    {
-        this.serviceRegistry.put(route, service);
+    public void addController(String route, Controller controller) {
+        this.controllerRegistry.put(route, controller);
     }
 
-    public void removeService(String route)
-    {
-        this.serviceRegistry.remove(route);
+    public void removeController(String route) {
+        this.controllerRegistry.remove(route);
     }
 
-    public Service resolve(String route)
-    {
-        return this.serviceRegistry.get(route);
+    public Controller resolve(String route) {
+        return this.controllerRegistry.get(route);
     }
 }

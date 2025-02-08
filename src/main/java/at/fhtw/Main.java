@@ -1,5 +1,6 @@
 package at.fhtw;
 
+import at.fhtw.app.controller.UserController;
 import at.fhtw.httpserver.server.Server;
 import at.fhtw.httpserver.utils.Router;
 import at.fhtw.sampleapp.service.echo.EchoService;
@@ -17,11 +18,9 @@ public class Main {
         }
     }
 
-    private static Router configureRouter()
-    {
+    private static Router configureRouter() {
         Router router = new Router();
-        router.addService("/weather", new WeatherService());
-        router.addService("/echo", new EchoService());
+        router.addController("/users", new UserController());
 
         return router;
     }

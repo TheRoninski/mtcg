@@ -1,6 +1,6 @@
 package at.fhtw.httpserver.http;
 
-public enum Method {
+public enum HttpMethod {
     GET,
     POST,
     PUT,

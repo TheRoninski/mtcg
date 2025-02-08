@@ -4,9 +4,9 @@ import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
-import at.fhtw.httpserver.server.Service;
+import at.fhtw.httpserver.server.Controller;
 
-public class EchoService implements Service {
+public class EchoService implements Controller {
     @Override
     public Response handleRequest(Request request) {
         return new Response(HttpStatus.OK,

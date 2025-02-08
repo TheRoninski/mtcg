@@ -1,6 +1,6 @@
 package at.fhtw.httpserver.utils;
 
-import at.fhtw.httpserver.http.Method;
+import at.fhtw.httpserver.http.HttpMethod;
 import at.fhtw.httpserver.server.Request;
 
 import java.io.BufferedReader;
@@ -35,8 +35,8 @@ public class RequestBuilder {
         return request;
     }
 
-    private Method getMethod(String methodString) {
-        return Method.valueOf(methodString.toUpperCase(Locale.ROOT));
+    private HttpMethod getMethod(String methodString) {
+        return HttpMethod.valueOf(methodString.toUpperCase(Locale.ROOT));
     }
 
     private void setPathname(Request request, String path){

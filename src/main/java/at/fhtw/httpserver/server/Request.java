@@ -1,12 +1,12 @@
 package at.fhtw.httpserver.server;
 
-import at.fhtw.httpserver.http.Method;
+import at.fhtw.httpserver.http.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Request {
-    private Method method;
+    private HttpMethod method;
     private String urlContent;
     private String pathname;
     private List<String> pathParts;
@@ -43,11 +43,11 @@ public class Request {
         }
     }
 
-    public Method getMethod() {
+    public HttpMethod getMethod() {
         return method;
     }
 
-    public void setMethod(Method method) {
+    public void setMethod(HttpMethod method) {
         this.method = method;
     }
 

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HeaderMap {
-    public static final String CONTENT_LENGTH_HEADER = "Content-Length";
-    public static final String HEADER_NAME_VALUE_SEPARATOR = ":";
+    private static final String CONTENT_LENGTH_HEADER = "Content-Length";
+    private static final String HEADER_NAME_VALUE_SEPARATOR = ":";
     private Map<String, String> headers = new HashMap<>();
 
     public void ingest(String headerLine) {
@@ -25,7 +25,4 @@ public class HeaderMap {
         return Integer.parseInt(header);
     }
 
-    public void print() {
-        System.out.println(headers);
-    }
 }

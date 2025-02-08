@@ -1,23 +1,8 @@
--- Als Postgres User:
-create user weatherdb PASSWORD 'weatherdb';
-create database weatherdb with owner weatherdb;
+DROP TABLE if exists users;
 
-
--- Als WeatherDB user:
-create table weather
+CREATE TABLE users
 (
-    id          serial,
-    region      VARCHAR(200) not null,
-    city        varchar(200) not null,
-    temperature float        not null
+    id       serial PRIMARY KEY,
+    username varchar(25) UNIQUE NOT NULL,
+    password varchar(255)        NOT NULL
 );
-
-
-INSERT INTO public.weather (id, region, city, temperature) VALUES (DEFAULT, 'Europe', 'Vienna', 28);
-INSERT INTO public.weather (id, region, city, temperature) VALUES (DEFAULT, 'Europe', 'Berlin', 26);
-INSERT INTO public.weather (id, region, city, temperature) VALUES (DEFAULT, 'Asia', 'Tokyo', 18);
-INSERT INTO public.weather (id, region, city, temperature) VALUES (DEFAULT, 'Europe', 'Rome', 35)
-
-
-
-
