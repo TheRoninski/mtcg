@@ -1,5 +1,6 @@
 package at.fhtw;
 
+import at.fhtw.app.controller.SessionController;
 import at.fhtw.app.controller.UserController;
 import at.fhtw.httpserver.server.Server;
 import at.fhtw.httpserver.utils.Router;
@@ -21,6 +22,7 @@ public class Main {
     private static Router configureRouter() {
         Router router = new Router();
         router.addController("/users", new UserController());
+        router.addController("/sessions", new SessionController());
 
         return router;
     }

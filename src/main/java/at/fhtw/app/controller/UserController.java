@@ -2,7 +2,9 @@ package at.fhtw.app.controller;
 
 import at.fhtw.app.model.request.CreateUserRequest;
 import at.fhtw.app.service.UserService;
+import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpMethod;
+import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Controller;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
@@ -17,10 +19,6 @@ public class UserController implements Controller {
 
     @Override
     public Response handleRequest(Request request) {
-        // 1. Schritt: checken welche Methode das ist, ob Methode = POST ist
-        // 2. Schritt: schauen ob der RequestPfad nur aus "/users" besteht
-        // 3. Schritt: RequestBody muss in ein Java Object umgewandelt werden
-        // 4. Schritt: User soll in der Datenbank auch erstellt werden
         if (!"/users".equals(request.getServiceRoute())) {
             return null;
         }
@@ -29,7 +27,20 @@ public class UserController implements Controller {
             if (request.getPathParts().size() == 1) {
                 String body = request.getBody();
                 CreateUserRequest createUserRequest = getCreateUserRequestFromJson(body);
-                this.userService.createUser(createUserRequest);
+                boolean isSuccessful = this.userService.createUser(createUserRequest);
+                if (isSuccessful) {
+                    return new Response(
+                            HttpStatus.CREATED,
+                            ContentType.PLAIN_TEXT,
+                            "User created"
+                    );
+                } else {
+                    return new Response(
+                            HttpStatus.BAD_REQUEST,
+                            ContentType.PLAIN_TEXT,
+                            "User already exists"
+                    );
+                }
             }
         }
         return null;

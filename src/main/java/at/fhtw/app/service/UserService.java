@@ -6,14 +6,16 @@ import at.fhtw.app.repository.UserRepository;
 
 public class UserService {
 
-    public void createUser(CreateUserRequest createUserRequest) {
+    public boolean createUser(CreateUserRequest createUserRequest) {
         UnitOfWork unitOfWork = new UnitOfWork();
         try (unitOfWork) {
             UserRepository userRepository = new UserRepository(unitOfWork);
             userRepository.createUser(createUserRequest);
             unitOfWork.commitTransaction();
+            return true;
         } catch (Exception e) {
             unitOfWork.rollbackTransaction();
+            return false;
         }
     }
 }
