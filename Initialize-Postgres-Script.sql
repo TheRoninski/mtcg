@@ -1,61 +1,38 @@
+DROP TABLE IF EXISTS trades;
+DROP TABLE IF EXISTS cards;
 DROP TABLE IF EXISTS users;
-CREATE TABLE users
-(
-    id       SERIAL PRIMARY KEY,
-    username VARCHAR(25) UNIQUE NOT NULL,
-    password VARCHAR(255)       NOT NULL,
-    coins    INTEGER            NOT NULL DEFAULT 20
+
+CREATE TABLE users (
+                       id SERIAL PRIMARY KEY,
+                       username VARCHAR(100) UNIQUE NOT NULL,
+                       password VARCHAR(200) NOT NULL,
+                       token VARCHAR(50) UNIQUE,
+                       coins INT DEFAULT 20,
+                       elo INT DEFAULT 100,
+                       is_admin BOOLEAN DEFAULT false,
+                       wins INT DEFAULT 0,
+                       losses INT DEFAULT 0,
+                       name VARCHAR(100),
+                       bio VARCHAR(255),
+                       image VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS packages;
-CREATE TABLE packages
-(
-    id      SERIAL PRIMARY KEY,
-    card1   VARCHAR(50) NOT NULL,
-    card2   VARCHAR(50) NOT NULL,
-    card3   VARCHAR(50) NOT NULL,
-    card4   VARCHAR(50) NOT NULL,
-    card5   VARCHAR(50) NOT NULL,
-    name1   VARCHAR(50) NOT NULL,
-    name2   VARCHAR(50) NOT NULL,
-    name3   VARCHAR(50) NOT NULL,
-    name4   VARCHAR(50) NOT NULL,
-    name5   VARCHAR(50) NOT NULL,
-    damage1 FLOAT       NOT NULL,
-    damage2 FLOAT       NOT NULL,
-    damage3 FLOAT       NOT NULL,
-    damage4 FLOAT       NOT NULL,
-    damage5 FLOAT       NOT NULL
+CREATE TABLE cards (
+                       id VARCHAR(255) PRIMARY KEY,
+                       name VARCHAR(255) NOT NULL,
+                       damage FLOAT NOT NULL,
+                       type VARCHAR(50) NOT NULL,
+                       element VARCHAR(50) NOT NULL,
+                       packageId INT NOT NULL,
+                       inDeck BOOLEAN DEFAULT false,
+                       userId INT,
+                       FOREIGN KEY (userId) REFERENCES users(id)
 );
 
-DROP TABLE IF EXISTS user_cards;
-CREATE TABLE user_cards
-(
-    id       SERIAL PRIMARY KEY,
-    username VARCHAR(25) NOT NULL,
-    card_id  VARCHAR(50) NOT NULL,
-    name     VARCHAR(50) NOT NULL,
-    damage   FLOAT       NOT NULL,
-    FOREIGN KEY (username) REFERENCES users (username)
-);
-
-DROP TABLE IF EXISTS user_deck;
-CREATE TABLE user_deck
-(
-    username VARCHAR(25) NOT NULL,
-    card_id  VARCHAR(50) NOT NULL,
-    position INTEGER     NOT NULL,
-    PRIMARY KEY (username, position),
-    FOREIGN KEY (username) REFERENCES users (username)
-);
-
-DROP TABLE IF EXISTS user_stats;
-CREATE TABLE user_stats
-(
-    username    VARCHAR(25) PRIMARY KEY,
-    elo         INTEGER NOT NULL DEFAULT 100,
-    gamesPlayed INTEGER NOT NULL DEFAULT 0,
-    wins        INTEGER NOT NULL DEFAULT 0,
-    losses      INTEGER NOT NULL DEFAULT 0,
-    FOREIGN KEY (username) REFERENCES users (username)
+CREATE TABLE trades (
+                        Id VARCHAR(255) PRIMARY KEY,
+                        CardToTrade VARCHAR(255),
+                        Type VARCHAR(50),
+                        MinimumDamage INT,
+                        FOREIGN KEY (CardToTrade) REFERENCES cards(id)
 );
