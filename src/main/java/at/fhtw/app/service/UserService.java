@@ -1,21 +1,53 @@
 package at.fhtw.app.service;
 
-import at.fhtw.app.database.UnitOfWork;
-import at.fhtw.app.model.request.CreateUserRequest;
-import at.fhtw.app.repository.UserRepository;
+import at.fhtw.app.dal.IUserManager;
+import at.fhtw.app.model.Credentials;
+import at.fhtw.app.model.UserData;
 
-public class UserService {
+public class UserService implements IUserService {
 
-    public boolean createUser(CreateUserRequest createUserRequest) {
-        UnitOfWork unitOfWork = new UnitOfWork();
-        try (unitOfWork) {
-            UserRepository userRepository = new UserRepository(unitOfWork);
-            userRepository.createUser(createUserRequest);
-            unitOfWork.commitTransaction();
-            return true;
-        } catch (Exception e) {
-            unitOfWork.rollbackTransaction();
-            return false;
-        }
+    private final IUserManager userDao;
+
+    public UserService(IUserManager userDao) {
+        this.userDao = userDao;
+    }
+
+    private String generateToken(String username) {
+        return username + "-mtcgToken";
+    }
+
+    @Override
+    public boolean createUser(Credentials credentials) {
+        return userDao.insertUser(credentials, credentials.username() + "-mtcgToken");
+    }
+
+    @Override
+    public boolean updateUser(String username, String password) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public boolean getUser(String username) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public String loginUser(Credentials credentials) {
+        return userDao.getTokenByCredentials(credentials);
+    }
+
+    @Override
+    public boolean payPackage(int userId, int amount) {
+        return userDao.decreaseCoinsAmount(userId, amount);
+    }
+
+    @Override
+    public void updateUserData(String username, UserData userData) {
+        userDao.updateUserData(username, userData);
+    }
+
+    @Override
+    public String getUserData(String username) {
+        return userDao.getUserData(username);
     }
 }
