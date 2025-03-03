@@ -1,37 +1,51 @@
 package at.fhtw;
 
-import at.fhtw.app.controller.SessionController;
-import at.fhtw.app.controller.UserController;
-import at.fhtw.app.controller.TransactionController;
-import at.fhtw.app.controller.CardsController;
-import at.fhtw.app.controller.DeckController;
-import at.fhtw.app.controller.EloController;
-
-import at.fhtw.httpserver.server.Server;
-import at.fhtw.httpserver.utils.Router;
-import at.fhtw.sampleapp.service.echo.EchoService;
-import at.fhtw.sampleapp.service.weather.WeatherService;
-
-import java.io.IOException;
+import at.fhtw.app.controller.*;
+import at.fhtw.app.dal.*;
+import at.fhtw.app.service.*;
+import at.fhtw.httpserver.server.TCPServer;
 
 public class Main {
     public static void main(String[] args) {
-        Server server = new Server(10001, configureRouter());
+        String connectionString = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
+
+        // Instantiate DAL
+        IUserManager userManager = new UserManager(connectionString);
+        ICardManager cardsManager = new CardsManager(connectionString);
+        ITradingManager tradingManager = new TradingManager(connectionString);
+
+        // Instantiate Services
+        AuthenticationService authenticationService = new AuthenticationService(userManager);
+        UserService userService = new UserService(userManager);
+        IPackageService packageService = new PackageService(cardsManager);
+        CardService cardService = new CardService(cardsManager);
+        IGameService gameService = new GameService(userManager, cardsManager);
+        TradingService tradingService = new TradingService(tradingManager, cardsManager);
+        // Additional
+        SessionService sessionService = new SessionService();
+
+        // Instantiate Controllers (all extend AbstractController)
+        AbstractController packageController = new PackageController(packageService, userService, authenticationService);
+        AbstractController userController = new UserController(userService, authenticationService);
+        AbstractController cardController = new CardController(sessionService, cardService);
+        AbstractController gameController = new GameController(gameService, authenticationService);
+        AbstractController tradingController = new TradingController(tradingService, cardService, authenticationService);
+
+        // Create HttpService (implements IHttpService)
+        IHttpService httpService = new HttpService(
+                userController,
+                packageController,
+                cardController,
+                gameController,
+                tradingController
+        );
+
+        // Start TCP server
+        TCPServer server = new TCPServer(10001, httpService);
         try {
-            server.start();
-        } catch (IOException e) {
+            server.listen();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static Router configureRouter() {
-        Router router = new Router();
-        router.addController("/users", new UserController());
-        router.addController("/sessions", new SessionController());
-        router.addController("/transactions/packages", new TransactionController());
-        router.addController("/cards", new CardsController());
-        router.addController("/deck", new DeckController());
-        router.addController("/stats", new EloController());
-        return router;
     }
 }

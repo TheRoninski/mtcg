@@ -1,23 +1,25 @@
 package at.fhtw.httpserver.http;
 
 public enum HttpStatus {
-    OK(200, "OK"),
-    CREATED(201, "CREATED"),
-    ACCEPTED(202, "Accepted"),
-    NO_CONTENT(204, "No Content"),
-    BAD_REQUEST(400, "Bad Request"),
-    UNAUTHORIZED(401, "Unauthorized"),
-    FORBIDDEN(403, "Forbidden"),
-    NOT_FOUND(404, "Not Found"),
-    CONFLICT(409, "Conflict"),
-    INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
-    NOT_IMPLEMENTED(501, "Not Implemented");
+    OK(200),
+    CREATED(201),
+    ACCEPTED(202),
+    NO_CONTENT(204),
+    BAD_REQUEST(400),
+    UNAUTHORIZED(401),
+    FORBIDDEN(403),
+    NOT_FOUND(404),
+    CONFLICT(409),
+    INTERNAL_SERVER_ERROR(500),
+    NOT_IMPLEMENTED(501);
 
-    public final int code;
-    public final String message;
+    private final int code;
 
-    HttpStatus(int code, String message) {
+    HttpStatus(int code) {
         this.code = code;
-        this.message = message;
+    }
+
+    public int getCode() {
+        return code;
     }
 }

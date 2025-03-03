@@ -1,7 +1,6 @@
 package at.fhtw.httpserver.server;
 
 import at.fhtw.httpserver.http.HttpMethod;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,35 +10,29 @@ public class Request {
     private String pathname;
     private List<String> pathParts;
     private String params;
-    private HeaderMap headerMap =  new HeaderMap();
+    private final HeaderMap headerMap = new HeaderMap();
     private String body;
 
-    public String getServiceRoute(){
-        if (this.pathParts == null ||
-                this.pathParts.isEmpty()) {
+    public String getServiceRoute() {
+        if (pathParts == null || pathParts.isEmpty()) {
             return null;
         }
-
-        return '/' + this.pathParts.get(0);
+        return "/" + pathParts.get(0);
     }
 
-    public String getUrlContent(){
-        return this.urlContent;
+    public String getUrlContent() {
+        return urlContent;
     }
 
     public void setUrlContent(String urlContent) {
         this.urlContent = urlContent;
-        Boolean hasParams = urlContent.indexOf("?") != -1;
-
-        if (hasParams) {
-            String[] pathParts =  urlContent.split("\\?");
-            this.setPathname(pathParts[0]);
-            this.setParams(pathParts[1]);
-        }
-        else
-        {
-            this.setPathname(urlContent);
-            this.setParams(null);
+        if (urlContent.contains("?")) {
+            String[] parts = urlContent.split("\\?", 2);
+            setPathname(parts[0]);
+            setParams(parts[1]);
+        } else {
+            setPathname(urlContent);
+            setParams(null);
         }
     }
 
@@ -55,21 +48,17 @@ public class Request {
         return pathname;
     }
 
-
     public void setPathname(String pathname) {
         this.pathname = pathname;
-        String[] stringParts = pathname.split("/");
-        this.pathParts = new ArrayList<>();
-        for (String part :stringParts)
-        {
-            if (part != null &&
-                    part.length() > 0)
-            {
-                this.pathParts.add(part);
+        String[] parts = pathname.split("/");
+        pathParts = new ArrayList<>();
+        for (String part : parts) {
+            if (part != null && !part.isEmpty()) {
+                pathParts.add(part);
             }
         }
-
     }
+
     public String getParams() {
         return params;
     }
@@ -82,10 +71,6 @@ public class Request {
         return headerMap;
     }
 
-    public void setHeaderMap(HeaderMap headerMap) {
-        this.headerMap = headerMap;
-    }
-
     public String getBody() {
         return body;
     }
@@ -96,9 +81,5 @@ public class Request {
 
     public List<String> getPathParts() {
         return pathParts;
-    }
-
-    public void setPathParts(List<String> pathParts) {
-        this.pathParts = pathParts;
     }
 }
