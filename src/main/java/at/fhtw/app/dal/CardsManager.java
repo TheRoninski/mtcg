@@ -14,7 +14,7 @@ public class CardsManager implements ICardManager {
     public CardsManager(String connectionString) {
         this.connectionString = connectionString;
         try (Connection connection = DriverManager.getConnection(connectionString)) {
-            DatabaseTables.ensureTables(connection);
+            //DatabaseTables.ensureTables(connection);
         } catch (SQLException e) {
             throw new RuntimeException("Error ensuring tables", e);
         }

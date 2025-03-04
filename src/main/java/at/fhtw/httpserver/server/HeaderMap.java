@@ -25,4 +25,12 @@ public class HeaderMap {
         }
         return Integer.parseInt(header);
     }
+
+    @Override
+    public String toString() {
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+        return headers.toString();
+    }
 }

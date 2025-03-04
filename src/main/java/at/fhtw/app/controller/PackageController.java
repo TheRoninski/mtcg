@@ -9,6 +9,8 @@ import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 
+import java.util.Map;
+
 public class PackageController extends AbstractController {
 
     private final IPackageService packageService;
@@ -26,6 +28,7 @@ public class PackageController extends AbstractController {
         String route = request.getServiceRoute();
         HttpMethod method = request.getMethod();
         String authToken = request.getHeaderMap().getHeader("Authorization");
+        System.out.println("?????????????????????????????????????" + request.getHeaderMap());
         String content = request.getBody();
         if ("/packages".equals(route)) {
             // Admin endpoint: Create a new package.

@@ -14,6 +14,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public User authenticateUser(String authToken, boolean isAdmin) {
+        System.out.println("##################################" + authToken);
         if (authToken == null || authToken.isEmpty()) {
             throw new AccessTokenException("No authentication token provided");
         }

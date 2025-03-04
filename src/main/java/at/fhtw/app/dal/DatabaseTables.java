@@ -54,7 +54,7 @@ public class DatabaseTables {
             stmt.executeUpdate(DropTrades);
             stmt.executeUpdate(DropCards);
             stmt.executeUpdate(DropUsers);
-            stmt.executeUpdate(CreateUserTableCommand);
+            //stmt.executeUpdate(CreateUserTableCommand);
             stmt.executeUpdate(CreateCardTableCommand);
             stmt.executeUpdate(CreatePackageTableCommand);
         }

@@ -12,13 +12,9 @@ public class UserService implements IUserService {
         this.userDao = userDao;
     }
 
-    private String generateToken(String username) {
-        return username + "-mtcgToken";
-    }
-
     @Override
     public boolean createUser(Credentials credentials) {
-        return userDao.insertUser(credentials, credentials.username() + "-mtcgToken");
+        return userDao.insertUser(credentials, "Bearer " + credentials.username() + "-mtcgToken");
     }
 
     @Override

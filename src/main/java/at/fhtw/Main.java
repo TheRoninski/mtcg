@@ -7,7 +7,7 @@ import at.fhtw.httpserver.server.TCPServer;
 
 public class Main {
     public static void main(String[] args) {
-        String connectionString = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
+        String connectionString = "jdbc:postgresql://localhost:5432/mtcgdb?user=postgres&password=postgres";
 
         // Instantiate DAL
         IUserManager userManager = new UserManager(connectionString);
